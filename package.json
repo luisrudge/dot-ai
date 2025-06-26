@@ -1,5 +1,6 @@
 {
   "name": "dot-ai",
+  "version": "0.0.2",
   "module": "index.ts",
   "type": "module",
   "bin": {
@@ -27,7 +28,6 @@
     "prepublishOnly": "bun run build",
     "prepare": "husky"
   },
-  "version": "0.0.1",
   "devDependencies": {
     "@types/bun": "^1.2.17",
     "husky": "^9.1.7",
