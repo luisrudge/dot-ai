@@ -206,39 +206,13 @@ You can now use `bun dot-ai@latest run` whenever you update `.ai/` configs.
 
 ### Starting Fresh
 
-If you don't have existing AI configs, create a `.ai/` folder in your project:
+If you don't have existing AI configs, initialize a new `.ai/` folder by running:
 
 ```bash
-mkdir -p .ai/rules .ai/commands
+bun dot-ai@latest init
 ```
 
-Add some content:
-
-```bash
-# .ai/instructions.md
-echo "# My Project\nMain development guidelines..." > .ai/instructions.md
-
-# .ai/rules/typescript.md
-cat > .ai/rules/typescript.md << 'EOF'
----
-title: TypeScript Rules
-enabled: true
----
-
-# TypeScript Guidelines
-- Use explicit types
-- Avoid any
-EOF
-
-# .ai/mcp.json
-echo '{"mcpServers":{"git":{"command":"npx","args":["@modelcontextprotocol/server-git"]}}}' > .ai/mcp.json
-```
-
-Generate all provider configs:
-
-```bash
-bun dot-ai@latest run
-```
+This will create the `.ai/` folder structure and example files to get you started.
 
 ## Important Note: This is a Temporary Solution
 
