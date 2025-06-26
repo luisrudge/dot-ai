@@ -54,12 +54,22 @@ bun install -g dot-ai
 
 ## Usage
 
+### Quick Start
+
 ```bash
+# Migrate existing configs to .ai/ folder (one-time setup)
+bun dot-ai@latest migrate
+
 # Generate all AI provider configs from .ai/ folder
-dot-ai run
+bun dot-ai@latest run
 ```
 
-That's it! The tool will:
+### Commands
+
+- **`migrate`** - One-time migration of existing configs into `.ai/` folder
+- **`run`** - Generate provider-specific configs from `.ai/` folder
+
+The `run` command will:
 
 1. Read your `.ai/` folder structure
 2. Generate provider-specific configuration files
@@ -136,9 +146,63 @@ MCP server configuration that gets distributed to all providers:
 | `.gemini/settings.json` | Gemini MCP settings      | `{ "mcpServers": { ... } }`                                      |
 | `opencode.json`         | OpenCode MCP config      | `{ "mcp": { "server": { "type": "local", "command": [...] } } }` |
 
+## How to Migrate to .ai
+
+If you have existing AI configs, follow this workflow to safely migrate:
+
+### 1. Create a Migration Branch
+
+```bash
+git checkout -b migrate-to-dot-ai
+```
+
+### 2. Run Migration
+
+```bash
+bun dot-ai@latest migrate
+```
+
+This creates a `.ai/` folder by consolidating your existing configs:
+
+- `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` → `.ai/instructions.md`
+- `.cursor/rules/*.mdc` → `.ai/rules/*.md`
+- Various MCP configs → `.ai/mcp.json`
+
+### 3. Review and Clean Up `.ai/` Folder
+
+**Important**: The migration may concatenate multiple files or create duplicate MCP configs. Edit the files as needed to remove duplicates and organize content properly.
+
+### 4. Delete Original AI Config Files
+
+Once satisfied with `.ai/` folder, remove the original AI-specific files:
+
+- **Always remove**: `CLAUDE.md`, `GEMINI.md`, `AGENTS.md`, `.cursor/rules/`
+- **MCP configs**: Remove `.mcp.json`, `.gemini/settings.json`, `opencode.json` since these will be auto-generated
+- **Keep other configs**: Don't remove `.json` files that serve purposes beyond MCP server configuration (like editor settings, build configs, etc.)
+
+### 5. Commit the Migration
+
+Commit the current work so we have a checkpoint.
+
+### 6. Generate New Configs
+
+```bash
+bun dot-ai@latest run
+```
+
+### 7. Add Generated Files to .gitignore
+
+You can add the generated files to .gitignore if you prefer.
+
+### 8. Re-generate when needed
+
+You can now use `bun dot-ai@latest run` whenever you update `.ai/` configs.
+
 ## Example
 
-Create a `.ai/` folder in your project:
+### Starting Fresh
+
+If you don't have existing AI configs, create a `.ai/` folder in your project:
 
 ```bash
 mkdir -p .ai/rules .ai/commands
@@ -166,10 +230,10 @@ EOF
 echo '{"mcpServers":{"git":{"command":"npx","args":["@modelcontextprotocol/server-git"]}}}' > .ai/mcp.json
 ```
 
-Run the generator:
+Generate all provider configs:
 
 ```bash
-dot-ai run
+bun dot-ai@latest run
 ```
 
 ## Important Note: This is a Temporary Solution
@@ -177,26 +241,6 @@ dot-ai run
 **dot-ai is intended as a stop-gap solution.** The ultimate goal is for AI model providers and development tools to standardize on a single configuration format, so every provider and CLI tool reads from the same place.
 
 Until that standardization happens, dot-ai helps eliminate the pain of maintaining duplicate configurations across multiple tools. We hope this project becomes obsolete as the ecosystem matures and converges on unified standards.
-
-## Development
-
-```bash
-# Clone the repository
-git clone https://github.com/luisrudge/dot-ai.git
-cd dot-ai
-
-# Install dependencies
-bun install
-
-# Run tests
-bun test
-
-# Build
-bun run build
-
-# Test locally
-bun run dev
-```
 
 ## Contributing
 
@@ -211,9 +255,6 @@ Contributions are welcome! This project aims to:
 ```bash
 # Install dependencies
 bun install
-
-# Run the CLI locally (without building)
-bun run dev
 
 # Build the project
 bun run build

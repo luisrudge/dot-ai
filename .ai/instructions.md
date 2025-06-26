@@ -19,7 +19,6 @@ src/
 
 ## Available Commands
 
-- **`bun run dev`**: Development mode with auto-restart
 - **`bun run build`**: Build for production (outputs to `dist/`)
 - **`bun run test`**: Run test suite
 - **`bun run typecheck`**: TypeScript type checking
@@ -28,10 +27,9 @@ src/
 
 ## Development Workflow
 
-1. Run `bun run dev` for development
-2. Make changes in `src/`
-3. Run `bun run typecheck` and `bun run test`
-4. Test CLI locally after building
+1. Make changes in `src/`
+2. Run `bun run typecheck` and `bun run test`
+3. Test CLI locally after building
 
 ## Key Functionality
 
