@@ -57,8 +57,8 @@ bun install -g dot-ai
 ### Quick Start
 
 ```bash
-# Migrate existing configs to .ai/ folder (one-time setup)
-bun dot-ai@latest migrate
+# Initialize .ai/ folder structure or migrate existing configs (one-time setup)
+bun dot-ai@latest init
 
 # Generate all AI provider configs from .ai/ folder
 bun dot-ai@latest run
@@ -66,7 +66,7 @@ bun dot-ai@latest run
 
 ### Commands
 
-- **`migrate`** - One-time migration of existing configs into `.ai/` folder
+- **`init`** - Initialize .ai/ folder structure or migrate existing configs
 - **`run`** - Generate provider-specific configs from `.ai/` folder
 
 The `run` command will:
@@ -159,7 +159,7 @@ git checkout -b migrate-to-dot-ai
 ### 2. Run Migration
 
 ```bash
-bun dot-ai@latest migrate
+bun dot-ai@latest init
 ```
 
 This creates a `.ai/` folder by consolidating your existing configs:
