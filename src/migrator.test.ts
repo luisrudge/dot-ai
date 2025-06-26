@@ -3,7 +3,7 @@ import { mkdirSync, rmSync } from "fs";
 import {
   detectProviderFiles,
   extractAllMCPConfigs,
-  runMigration,
+  runInit,
 } from "./migrator.ts";
 
 const TEST_DIR = "/tmp/dot-ai-migrator-test";
@@ -288,7 +288,7 @@ Use strict types.`,
     );
 
     // Run migration
-    await runMigration();
+    await runInit();
 
     // Verify .ai structure was created
     expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
@@ -321,8 +321,9 @@ Use strict types.`,
     // Create some provider files
     await Bun.write("CLAUDE.md", "Instructions");
 
-    // Should throw error
-    await expect(runMigration()).rejects.toThrow(".ai folder already exists");
+    // Should not throw error - runInit handles existing .ai folder
+    await runInit();
+    expect(await Bun.file(".ai/instructions.md").exists()).toBe(false); // Should not create anything
   });
 
   test("should handle partial provider configs", async () => {
@@ -332,21 +333,21 @@ Use strict types.`,
     mkdirSync(".cursor/rules", { recursive: true });
     await Bun.write(".cursor/rules/test.mdc", "Test rule");
 
-    await runMigration();
+    await runInit();
 
     // Should create what it can
     expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
     expect(await Bun.file(".ai/rules/test.md").exists()).toBe(true);
-    expect(await Bun.file(".ai/mcp.json").exists()).toBe(false);
+    expect(await Bun.file(".ai/mcp.json").exists()).toBe(true); // runInit always creates empty mcp.json
 
     const instructions = await Bun.file(".ai/instructions.md").text();
     expect(instructions).toBe("Only Claude instructions");
   });
 
-  test("should error when no provider files found", async () => {
-    await expect(runMigration()).rejects.toThrow(
-      "No AI provider configs found to migrate",
-    );
+  test("should create initial structure when no provider files found", async () => {
+    // runInit creates initial structure when no provider files found
+    await runInit();
+    expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
   });
 
   test("should handle MCP duplicate detection", async () => {
@@ -374,7 +375,7 @@ Use strict types.`,
     console.log = (...args) => logs.push(args.join(" "));
 
     try {
-      await runMigration();
+      await runInit();
 
       // Should mention duplicates
       const output = logs.join("\n");
@@ -406,7 +407,7 @@ Test rule content`,
     );
 
     // Run migration
-    await runMigration();
+    await runInit();
 
     // Import generation functions to test
     const { readAIConfig, generateFiles } = await import("./generator.ts");

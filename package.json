@@ -22,7 +22,6 @@
   ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target bun --format esm",
-    "dev": "bun --watch src/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "prepublishOnly": "bun run build",

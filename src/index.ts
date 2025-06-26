@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { runGeneration } from "./generator.ts";
-import { runMigration } from "./migrator.ts";
+import { runInit } from "./migrator.ts";
 
 async function checkGitStatus() {
   try {
@@ -29,21 +29,25 @@ async function main() {
   if (args.length === 0) {
     console.log("Usage: dot-ai <command>");
     console.log("Commands:");
-    console.log("  run      Generate AI provider configs from .ai/ folder");
-    console.log("  migrate  Migrate existing provider configs to .ai/ folder");
+    console.log("  run   Generate AI provider configs from .ai/ folder");
+    console.log(
+      "  init  Initialize .ai/ folder structure or migrate existing configs",
+    );
     process.exit(1);
   }
 
   if (args[0] === "run") {
     await runGeneration();
-  } else if (args[0] === "migrate") {
-    await runMigration();
+  } else if (args[0] === "init") {
+    await runInit();
   } else {
     console.error(`❌ Error: Unknown command '${args[0]}'`);
     console.log("Usage: dot-ai <command>");
     console.log("Commands:");
-    console.log("  run      Generate AI provider configs from .ai/ folder");
-    console.log("  migrate  Migrate existing provider configs to .ai/ folder");
+    console.log("  run   Generate AI provider configs from .ai/ folder");
+    console.log(
+      "  init  Initialize .ai/ folder structure or migrate existing configs",
+    );
     process.exit(1);
   }
 }
