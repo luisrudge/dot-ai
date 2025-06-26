@@ -5,6 +5,14 @@
   "bin": {
     "dot-ai": "./dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luisrudge/dot-ai.git"
+  },
+  "homepage": "https://github.com/luisrudge/dot-ai",
+  "bugs": {
+    "url": "https://github.com/luisrudge/dot-ai/issues"
+  },
   "files": [
     "bin/",
     "dist/",
@@ -12,13 +20,25 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node",
+    "build": "bun build src/index.ts --outdir dist --target bun --format esm",
     "dev": "bun --watch src/index.ts",
-    "prepublishOnly": "bun run build"
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "prepublishOnly": "bun run build",
+    "prepare": "husky"
   },
   "version": "0.0.1",
   "devDependencies": {
     "@types/bun": "^1.2.17",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.1",
+    "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "^5.8.3"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --no-error-on-unmatched-pattern --ignore-unknown --plugin=prettier-plugin-organize-imports --write"
+    ]
   }
 }
