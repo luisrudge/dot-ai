@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { mkdirSync, rmSync } from "fs";
-import { runMigration } from "./migrator.ts";
+import { runInit } from "./migrator.ts";
 
-const TEST_DIR = "/tmp/dot-ai-migrate-cli-test";
+const TEST_DIR = "/tmp/dot-ai-init-cli-test";
 
-describe("Migration CLI Tests", () => {
+describe("Init CLI Tests", () => {
   beforeEach(async () => {
     try {
       rmSync(TEST_DIR, { recursive: true, force: true });
@@ -20,7 +20,7 @@ describe("Migration CLI Tests", () => {
     } catch {}
   });
 
-  test("should run migrate command successfully", async () => {
+  test("should migrate existing AI files with init command", async () => {
     await Bun.write("CLAUDE.md", "# Test Instructions\\n\\nMain instructions.");
     await Bun.write(
       "AGENTS.md",
@@ -44,7 +44,7 @@ Test rule content`,
       }),
     );
 
-    await runMigration();
+    await runInit();
 
     expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
     expect(await Bun.file(".ai/rules/test.md").exists()).toBe(true);
@@ -62,11 +62,15 @@ Test rule content`,
     expect(true).toBe(true);
   });
 
-  test("should fail migrate when .ai folder exists", async () => {
+  test("should do nothing when .ai folder already exists", async () => {
     mkdirSync(".ai", { recursive: true });
     await Bun.write("CLAUDE.md", "Instructions");
 
-    expect(runMigration()).rejects.toThrow(".ai folder already exists");
+    // Should not throw an error, should just return
+    await runInit();
+    
+    // Should not create any files since .ai folder exists
+    expect(await Bun.file(".ai/instructions.md").exists()).toBe(false);
   });
 
   test("should migrate AGENTS.md only", async () => {
@@ -75,12 +79,38 @@ Test rule content`,
       "# Agents Only\\n\\nOnly agents instructions.",
     );
 
-    await runMigration();
+    await runInit();
 
     expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
 
     const instructions = await Bun.file(".ai/instructions.md").text();
     expect(instructions).toContain("Agents Only");
     expect(instructions).toContain("Only agents instructions");
+  });
+
+  test("should create dummy content when no AI files exist", async () => {
+    // Run init with no existing AI files
+    await runInit();
+
+    // Should create the dummy structure
+    expect(await Bun.file(".ai/instructions.md").exists()).toBe(true);
+    expect(await Bun.file(".ai/rules/example.md").exists()).toBe(true);
+    expect(await Bun.file(".ai/commands/example.md").exists()).toBe(true);
+    expect(await Bun.file(".ai/mcp.json").exists()).toBe(true);
+
+    // Verify content
+    const instructions = await Bun.file(".ai/instructions.md").text();
+    expect(instructions).toContain("# AI Instructions");
+    expect(instructions).toContain("This is your AI assistant configuration file");
+
+    const rule = await Bun.file(".ai/rules/example.md").text();
+    expect(rule).toContain("# Example Rule");
+    expect(rule).toContain("example-rule");
+
+    const command = await Bun.file(".ai/commands/example.md").text();
+    expect(command).toContain("# example-command");
+
+    const mcp = await Bun.file(".ai/mcp.json").json();
+    expect(mcp).toEqual({ mcpServers: {} });
   });
 });
