@@ -46,6 +46,12 @@ AGENTS.md                 # Agents instructions (identical to Claude)
 opencode.json            # OpenCode MCP config
 ```
 
+## Important Note: This is a Temporary Solution
+
+**dot-ai is intended as a stop-gap solution.** The ultimate goal is for AI model providers and development tools to standardize on a single configuration format, so every provider and CLI tool reads from the same place. When that happens, this project will be deprecated.
+
+Until that standardization happens, dot-ai helps eliminate the pain of maintaining duplicate configurations across multiple tools. We hope this project becomes obsolete as the ecosystem matures and converges on unified standards.
+
 ## Running the CLI
 
 ```bash
@@ -202,9 +208,7 @@ You can add the generated files to .gitignore if you prefer.
 
 You can now use `bun dot-ai@latest run` whenever you update `.ai/` configs.
 
-## Example
-
-### Starting Fresh
+## Starting Fresh
 
 If you don't have existing AI configs, initialize a new `.ai/` folder by running:
 
@@ -213,12 +217,6 @@ bun dot-ai@latest init
 ```
 
 This will create the `.ai/` folder structure and example files to get you started.
-
-## Important Note: This is a Temporary Solution
-
-**dot-ai is intended as a stop-gap solution.** The ultimate goal is for AI model providers and development tools to standardize on a single configuration format, so every provider and CLI tool reads from the same place.
-
-Until that standardization happens, dot-ai helps eliminate the pain of maintaining duplicate configurations across multiple tools. We hope this project becomes obsolete as the ecosystem matures and converges on unified standards.
 
 ## Contributing
 
