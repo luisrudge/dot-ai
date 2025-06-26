@@ -234,7 +234,4 @@ export async function runMigration(): Promise<void> {
     console.log(`⚠️  Duplicate MCP servers found: ${duplicates.join(", ")}`);
     console.log("   Please review .ai/mcp.json and resolve conflicts manually");
   }
-
-  console.log("");
-  console.log("💡 Run 'dot-ai run' to test the migrated configuration");
 }
