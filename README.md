@@ -4,6 +4,8 @@
 
 A CLI tool that reads from a single `.ai/` directory and generates configuration files for multiple AI assistants and code editors, eliminating duplicate configs across Claude Code, Cursor, Gemini, and OpenCode.
 
+![XKCD on standards](https://imgs.xkcd.com/comics/standards.png)
+
 ## The Problem
 
 Modern development often involves multiple AI assistants and code editors, each requiring their own configuration files:
