@@ -36,3 +36,11 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 test-run/*
 !test-run/.ai/
 test-migrate/.ai/
+
+# ai stuff
+.mcp.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+opencode.json
+settings.json
