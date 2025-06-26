@@ -1,0 +1,24 @@
+{
+  "name": "dot-ai",
+  "module": "index.ts",
+  "type": "module",
+  "bin": {
+    "dot-ai": "./dist/index.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node",
+    "dev": "bun --watch src/index.ts",
+    "prepublishOnly": "bun run build"
+  },
+  "version": "0.0.1",
+  "devDependencies": {
+    "@types/bun": "^1.2.17",
+    "typescript": "^5.8.3"
+  }
+}
