@@ -48,6 +48,10 @@ AGENTS.md                 # Agents instructions (identical to Claude)
 opencode.json            # OpenCode MCP config
 ```
 
+### Before and After
+
+![before and after](https://i.imgur.com/aVbTaAZ.png)
+
 ## Important Note: This is a Temporary Solution
 
 **dot-ai is intended as a stop-gap solution.** The ultimate goal is for AI model providers and development tools to standardize on a single configuration format, so every provider and CLI tool reads from the same place. When that happens, this project will be deprecated.
