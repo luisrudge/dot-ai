@@ -46,10 +46,14 @@ AGENTS.md                 # Agents instructions (identical to Claude)
 opencode.json            # OpenCode MCP config
 ```
 
-## Installation
+## Running the CLI
 
 ```bash
-bun install -g dot-ai
+# If you have bun installed
+bunx dot-ai@latest
+
+# If you don't have bun installed
+npx bun x dot-ai@latest
 ```
 
 ## Usage
